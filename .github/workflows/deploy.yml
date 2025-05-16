@@ -21,13 +21,16 @@ jobs:
       - name: Install Dependencies
         run: npm install
       
+      - name: Prepare Build
+        run: |
+          mkdir -p public
+          cp index.html public/
+          cp CNAME public/
+      
       - name: Build
         run: npm run build
         env:
           CI: false
-        
-      - name: Copy CNAME
-        run: cp CNAME build/
         
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
