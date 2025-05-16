@@ -1,0 +1,9 @@
+title: Linkco Web
+baseurl: ""
+url: ""
+theme: jekyll-theme-primer
+
+exclude:
+  - node_modules
+  - package.json
+  - package-lock.json

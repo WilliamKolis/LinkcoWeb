@@ -1,0 +1,45 @@
+# WebLinkco .gitignore file
+
+# Dependencies
+/node_modules
+
+# Build output
+/build
+/dist
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# dotenv environment variable file
+.env
+
+# Next.js build output
+.next
+
+# Nuxt.js build output
+.nuxt
+
+# Sapper build output
+__sapper__/
+
+# Rollup cache
+.rollupcache
+
+# Vite press
+vitepress/dist
+
+# SvelteKit build output
+.svelte-kit
+
+# Remove or comment out /docs if it exists
+# /docs
