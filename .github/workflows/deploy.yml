@@ -21,11 +21,14 @@ jobs:
       - name: Install Dependencies
         run: npm install
       
-      - name: Prepare Build
+      - name: Create src directory
         run: |
-          mkdir -p public
-          cp index.html public/
-          cp CNAME public/
+          mkdir -p src
+          touch src/index.js
+          echo "import React from 'react';
+          import ReactDOM from 'react-dom';
+          import App from './App';
+          ReactDOM.render(<App />, document.getElementById('root'));" > src/index.js
       
       - name: Build
         run: npm run build
