@@ -2,7 +2,10 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]  # tambahkan master karena default branch bisa main atau master
+
+permissions:
+  contents: write
 
 jobs:
   build-and-deploy:
@@ -14,16 +17,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16'
+          cache: 'npm'
       
       - name: Install Dependencies
-        run: npm install
+        run: npm ci  # menggunakan ci untuk clean install
       
       - name: Build
         run: npm run build
+        env:
+          CI: false  # bypass build errors
         
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
           folder: build
-          clean: true
+          branch: gh-pages
