@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Linkco</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .custom-navbar {
+            background: transparent;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .custom-navbar.scrolled {
+            background: linear-gradient(135deg, #003366 0%, #0066cc 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .blog-hero {
+            background: linear-gradient(135deg, #003366, #0066cc);
+            padding: 18rem 0 12rem;
+            min-height: 90vh;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .blog-hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255,255,255,0.05) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease;
+            margin-top: -8rem;
+        }
+
+        .hero-title {
+            font-size: 5.5rem;
+            font-weight: 800;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(45deg, #ffffff, #e6f2ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero-subtitle {
+            font-size: 2rem;
+            font-weight: 300;
+            line-height: 1.6;
+            margin-bottom: 3.5rem;
+            opacity: 0.9;
+        }
+
+        .hero-decoration {
+            position: absolute;
+            font-size: 12rem;
+            opacity: 0.05;
+            color: white;
+        }
+
+        .hero-decoration.left {
+            left: -2rem;
+            top: 0;
+            transform: rotate(-15deg);
+        }
+
+        .hero-decoration.right {
+            right: -2rem;
+            bottom: -2rem;
+            transform: rotate(15deg);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .blog-card {
+            flex: 0 0 calc(33.333% - 1rem);
+            opacity: 0;
+            background: white;
+            border: 2px solid rgba(0, 51, 102, 0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            transform: translateX(50px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: none;  /* Hide by default */
+        }
+
+        .blog-card.show {
+            opacity: 1;
+            transform: translateX(0);
+            display: block;  /* Show when active */
+        }
+
+        .blog-cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            min-height: 450px;  /* Fixed height to prevent layout shift */
+        }
+
+        .blog-grid {
+            min-height: 500px;
+            position: relative;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .blog-icon-wrap {
+            height: 200px;
+            background: linear-gradient(135deg, #003366, #0066cc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-icon-wrap i {
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .blog-card:hover .blog-icon-wrap i {
+            transform: scale(1.1);
+        }
+
+        .blog-content {
+            padding: 2rem;
+            background: white;
+            border-top: 1px solid rgba(0, 51, 102, 0.05);
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 200px); /* Subtract icon-wrap height */
+        }
+
+        .blog-content > div {
+            flex: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .blog-card .btn {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .blog-card .btn i {
+            font-size: 1.1rem;
+        }
+
+        .blog-card .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .blog-card p {
+            margin-bottom: 1rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .featured-section {
+            position: relative;
+            background: linear-gradient(to right, rgba(0, 51, 102, 0.02), rgba(0, 51, 102, 0.05));
+            padding: 5rem 0;
+        }
+
+        .featured-post {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .featured-post:hover {
+            transform: translateY(-10px);
+        }
+
+        .featured-icon-wrap {
+            background: linear-gradient(45deg, #003366, #0066cc);
+            padding: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .featured-icon {
+            font-size: 8rem;
+            color: rgba(255, 255, 255, 0.9);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .featured-content {
+            padding: 3rem;
+            background: white;
+        }
+
+        .featured-tag {
+            background: linear-gradient(45deg, #003366, #0066cc);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            background: white;
+            padding: 1rem;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 3rem;
+        }
+
+        .category-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            border: 2px solid #003366;
+            background: transparent;
+            color: #003366;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .category-btn:focus {
+            box-shadow: none;
+        }
+
+        .category-btn.active {
+            background: #003366;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .navbar-brand img {
+            height: 45px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav {
+            gap: 0.5rem;
+        }
+
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: white;
+            color: #003366 !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::before {
+            width: 80%;
+        }
+
+        .footer-menu {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        
+        .footer-menu li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-menu a {
+            font-size: 15px;
+            font-weight: 500;
+            padding: 5px 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease;
+        }
+        
+        .footer-menu a:hover {
+            padding-left: 5px;
+        }
+        
+        .footer-menu a:hover::after {
+            width: 100%;
+        }
+
+        .blog-grid-section {
+            background: linear-gradient(135deg, rgba(0,51,102,0.02), rgba(0,102,204,0.05));
+            padding: 5rem 0;
+        }
+
+        .pagination {
+            position: relative;
+            z-index: 10;
+        }
+
+        .contact-link {
+            background: rgb(255, 255, 255) !important;
+            color: #003366 !important;
+            padding: 0.8rem 1.5rem !important;
+            border-radius: 50px !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease !important;
+        }
+
+        .contact-link:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+            background: #f8f9fa !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/images/logo.png" alt="Logo" class="img-fluid">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                style="border: none; color: white;">
+                <i class="bi bi-list fs-1"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.html">Produk Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Carrer</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="blog.html">Blog</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link contact-link" href="https://wa.link/ghl23t" target="_blank" style="background: #25D366 !important; color: white !important;">
+                            <i class="bi bi-whatsapp me-2"></i>Bergabung Dengan Kami
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Blog Hero -->
+    <section class="blog-hero">
+        <i class="bi bi-pencil-square hero-decoration left"></i>
+        <i class="bi bi-journal-text hero-decoration right"></i>
+        <div class="container position-relative">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Cerita & Inspirasi</h1>
+                        <p class="hero-subtitle">Temukan artikel menarik seputar kopi, bisnis, dan lifestyle dari komunitas Linkco</p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="#latest" class="btn btn-light btn-lg rounded-pill px-4">
+                                <i class="bi bi-clock-history me-2"></i>Latest Posts
+                            </a>
+                            <a href="#featured-section" class="btn btn-outline-light btn-lg rounded-pill px-4">
+                                <i class="bi bi-star me-2"></i>Featured
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Post -->
+    <section class="featured-section" id="featured-section">
+        <div class="container">
+            <h2 class="text-center mb-5" style="color: #003366;">Featured Article</h2>
+            <div class="featured-post">
+                <div class="row g-0">
+                    <div class="col-lg-5">
+                        <div class="featured-icon-wrap">
+                            <i class="bi bi-journal-richtext featured-icon"></i>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="featured-content">
+                            <span class="featured-tag">
+                                <i class="bi bi-star-fill me-2"></i>Featured
+                            </span>
+                            <h3 class="display-6 fw-bold mb-3">Rahasia Sukses Bisnis Kopi di Era Digital</h3>
+                            <p class="lead mb-4">Pelajari strategi dan tips sukses menjalankan bisnis kopi di era digital dengan teknologi dan inovasi terkini.</p>
+                            <div class="d-flex align-items-center gap-3">
+                                <a href="#" class="btn btn-primary btn-lg rounded-pill px-4">
+                                    <i class="bi bi-book me-2"></i>Read More
+                                </a>
+                                <div class="vr"></div>
+                                <div class="text-muted">
+                                    <i class="bi bi-clock me-2"></i>5 min read
+                                </div>
+                                <div class="text-muted">
+                                    <i class="bi bi-eye me-2"></i>1.2k views
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Posts -->
+    <section class="blog-grid-section" id="latest">
+        <div class="container">
+            <div class="category-filter d-flex justify-content-center">
+                <button class="category-btn active" data-category="all">
+                    <i class="bi bi-grid-3x3-gap me-2"></i>All
+                </button>
+                <button class="category-btn" data-category="coffee">
+                    <i class="bi bi-cup-hot me-2"></i>Coffee
+                </button>
+                <button class="category-btn" data-category="business">
+                    <i class="bi bi-briefcase me-2"></i>Business
+                </button>
+                <button class="category-btn" data-category="lifestyle">
+                    <i class="bi bi-heart me-2"></i>Lifestyle
+                </button>
+                <button class="category-btn" data-category="technology">
+                    <i class="bi bi-laptop me-2"></i>Technology
+                </button>
+            </div>
+
+            <div class="blog-grid" id="blogGrid">
+                <div class="blog-cards-container">
+                    <div class="blog-card" data-category="coffee" data-page="1">
+                        <div class="blog-icon-wrap">
+                            <i class="bi bi-cup-hot"></i>
+                        </div>
+                        <div class="blog-content">
+                            <div>
+                                <span class="blog-tag">
+                                    <i class="bi bi-bookmark-fill me-2"></i>Coffee
+                                </span>
+                                <h3 class="blog-title">Mengenal Berbagai Jenis Kopi</h3>
+                                <div class="blog-meta">
+                                    <span><i class="bi bi-clock me-2"></i>5 min read</span>
+                                    <span><i class="bi bi-eye me-2"></i>1.2k views</span>
+                                </div>
+                                <p class="text-muted">Panduan lengkap mengenal berbagai jenis kopi dan karakteristiknya.</p>
+                            </div>
+                            <a href="#" class="btn btn-primary rounded-pill">
+                                <i class="bi bi-arrow-right"></i>Read More
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="blog-card" data-category="business" data-page="1">
+                        <div class="blog-icon-wrap">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                        <div class="blog-content">
+                            <div>
+                                <span class="blog-tag"><i class="bi bi-bookmark me-2"></i>Business</span>
+                                <h3 class="blog-title">Tips Marketing Digital</h3>
+                                <div class="blog-meta">
+                                    <span><i class="bi bi-clock me-1"></i>7 min read</span>
+                                    <span><i class="bi bi-eye me-1"></i>2.5k views</span>
+                                </div>
+                                <p class="text-muted">Tips sukses marketing di era digital.</p>
+                            </div>
+                            <a href="#" class="btn btn-primary rounded-pill">
+                                <i class="bi bi-arrow-right"></i>Read More
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="blog-card" data-category="lifestyle" data-page="1">
+                        <div class="blog-icon-wrap">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <div class="blog-content">
+                            <div>
+                                <span class="blog-tag"><i class="bi bi-bookmark me-2"></i>Lifestyle</span>
+                                <h3 class="blog-title">Komunitas Barista</h3>
+                                <div class="blog-meta">
+                                    <span><i class="bi bi-clock me-1"></i>4 min read</span>
+                                    <span><i class="bi bi-eye me-1"></i>980 views</span>
+                                </div>
+                                <p class="text-muted">Cerita inspiratif dari komunitas barista.</p>
+                            </div>
+                            <a href="#" class="btn btn-primary rounded-pill">
+                                <i class="bi bi-arrow-right"></i>Read More
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="blog-card" data-category="technology" data-page="2">
+                        <div class="blog-icon-wrap">
+                            <i class="bi bi-laptop"></i>
+                        </div>
+                        <div class="blog-content">
+                            <div>
+                                <span class="blog-tag"><i class="bi bi-bookmark me-2"></i>Technology</span>
+                                <h3 class="blog-title">Digital Coffee Shop</h3>
+                                <div class="blog-meta">
+                                    <span><i class="bi bi-clock me-1"></i>6 min read</span>
+                                    <span><i class="bi bi-eye me-1"></i>1.5k views</span>
+                                </div>
+                                <p class="text-muted">Transformasi digital kedai kopi modern.</p>
+                            </div>
+                            <a href="#" class="btn btn-primary rounded-pill">
+                                <i class="bi bi-arrow-right"></i>Read More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="mt-5 d-flex justify-content-center">
+                <ul class="pagination" id="pagination">
+                    <li class="page-item">
+                        <a class="page-link shadow-sm" href="#"><i class="bi bi-chevron-left"></i></a>
+                    </li>
+                    <li class="page-item active"><a class="page-link shadow-sm" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link shadow-sm" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link shadow-sm" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link shadow-sm" href="#"><i class="bi bi-chevron-right"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <a href="index.html">
+                        <img src="assets/images/logo.png" alt="Logo" style="height: 100px; margin-bottom: 20px;">
+                    </a>
+                    <p class="mb-0">RUKO OP-E1, Kantor pusat Linkco coffee kopi & food, The Suites @ Metro Apartment, Jatisari, Kec. Buahbatu, Kota Bandung, Jawa Barat 40286</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <ul class="list-unstyled footer-menu">
+                        <li><a href="index.html" class="text-white text-decoration-none">Beranda</a></li>
+                        <li><a href="about.html" class="text-white text-decoration-none">Tentang Kami</a></li>
+                        <li><a href="products.html" class="text-white text-decoration-none">Produk Kami</a></li>
+                        <li><a href="services.html" class="text-white text-decoration-none">Carrer</a></li>
+                        <li><a href="blog.html" class="text-white text-decoration-none">Blog</a></li>
+                        <li><a href="https://wa.link/ghl23t" target="_blank" class="text-white text-decoration-none">Bergabung Dengan Kami</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4"> 
+                    <a href="https://play.google.com/store/apps/details?id=com.linkco.app">
+                        <img src="assets/images/qr-code.png" alt="QR Code" style="width: 150px; margin-bottom: 10px;">
+                    </a>
+                    <div class="mt-3">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.5647563073824!2d107.66543157499!3d-6.939776093067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e9ad9ce03b03%3A0x5c06ba79358ee3f1!2sLinkco%20Coffee!5e0!3m2!1sen!2sid!4v1703728899011!5m2!1sen!2sid" 
+                            width="100%" 
+                            height="200" 
+                            style="border:0; border-radius: 8px; margin-top: 10px;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-light my-4">
+            <div class="text-center">
+                <p class="mb-3">&copy; 2025 Linkco. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/linkthecoffee.id/" class="me-3 text-white"><i class="bi bi-facebook fs-5"></i></a>
+                    <a href="https://www.tiktok.com/@linkco.id" class="me-3 text-white"><i class="bi bi-tiktok fs-5"></i></a>
+                    <a href="https://www.instagram.com/linkco.id/" class="me-3 text-white"><i class="bi bi-instagram fs-5"></i></a>
+                    <a href="https://id.linkedin.com/in/linkco-coffee-3069ba287" class="text-white"><i class="bi bi-linkedin fs-5"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const blogGrid = document.getElementById('blogGrid');
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            const blogCards = document.querySelectorAll('.blog-card');
+            const itemsPerPage = 3;
+            let currentPage = 1;
+            let currentCategory = 'all';
+
+            // Updated showPage function
+            function showPage(page) {
+                const visibleCards = Array.from(blogCards).filter(card => 
+                    card.dataset.category === currentCategory || currentCategory === 'all'
+                );
+
+                blogCards.forEach(card => {
+                    card.style.display = 'none';
+                    card.classList.remove('show');
+                });
+
+                const startIndex = (page - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+
+                visibleCards.slice(startIndex, endIndex).forEach((card, index) => {
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.classList.add('show');
+                    }, index * 100);
+                });
+
+                currentPage = page;
+            }
+
+            // Updated filterCategory function
+            function filterCategory(category) {
+                currentCategory = category;
+                currentPage = 1;
+                
+                const visibleCards = Array.from(blogCards).filter(card => 
+                    card.dataset.category === category || category === 'all'
+                );
+
+                updatePagination(Math.ceil(visibleCards.length / itemsPerPage));
+                showPage(1);
+            }
+
+            // Updated updatePagination function
+            function updatePagination(pageCount) {
+                const pagination = document.getElementById('pagination');
+                pagination.innerHTML = '';
+
+                if (pageCount <= 1) {
+                    return; // Don't show pagination if only one page
+                }
+
+                // Previous button
+                const prevLi = document.createElement('li');
+                prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+                prevLi.innerHTML = `<a class="page-link shadow-sm" href="#"><i class="bi bi-chevron-left"></i></a>`;
+                prevLi.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (currentPage > 1) {
+                        showPage(currentPage - 1);
+                        updatePaginationActive();
+                    }
+                });
+                pagination.appendChild(prevLi);
+
+                // Page numbers
+                for (let i = 1; i <= pageCount; i++) {
+                    const li = document.createElement('li');
+                    li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                    li.innerHTML = `<a class="page-link shadow-sm" href="#">${i}</a>`;
+                    li.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        showPage(i);
+                        updatePaginationActive();
+                    });
+                    pagination.appendChild(li);
+                }
+
+                // Next button
+                const nextLi = document.createElement('li');
+                nextLi.className = `page-item ${currentPage === pageCount ? 'disabled' : ''}`;
+                nextLi.innerHTML = `<a class="page-link shadow-sm" href="#"><i class="bi bi-chevron-right"></i></a>`;
+                nextLi.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (currentPage < pageCount) {
+                        showPage(currentPage + 1);
+                        updatePaginationActive();
+                    }
+                });
+                pagination.appendChild(nextLi);
+            }
+
+            function updatePaginationActive() {
+                document.querySelectorAll('.pagination .page-item').forEach((item, index) => {
+                    if (index === 0 || index === document.querySelectorAll('.pagination .page-item').length - 1) return;
+                    item.classList.toggle('active', index === currentPage);
+                });
+            }
+
+            // Add smooth scroll for Featured button
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Initialize
+            filterCategory('all');
+
+            // Add click event listeners to category buttons
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+                    // Get category from data attribute
+                    filterCategory(btn.dataset.category);
+                });
+            });
+        });
+
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.custom-navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

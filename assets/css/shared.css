@@ -1,0 +1,120 @@
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    /* Common styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* Root variables */
+    :root {
+        --primary: #003366;
+        --primary-light: #0066cc;
+        --secondary: #2d3748;
+        --gray-100: #f7fafc;
+        --gray-200: #edf2f7;
+        --gray-300: #e2e8f0;
+        --gray-600: #4a5568;
+    }
+
+    /* Navbar styles */
+    .custom-navbar {
+        background: transparent;
+        padding: 1rem 0;
+        transition: all 0.3s ease;
+    }
+
+    .custom-navbar.scrolled {
+        background: linear-gradient(135deg, #003366 0%, #0066cc 100%);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .navbar-brand img {
+        height: 45px;
+        transition: all 0.3s ease;
+    }
+
+    .navbar-nav {
+        gap: 0.5rem;
+    }
+
+    .nav-link {
+        color: white !important;
+        font-weight: 500;
+        padding: 0.7rem 1.2rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .nav-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .nav-link.active {
+        background: white;
+        color: #003366 !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-link::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 2px;
+        background: white;
+        transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::before {
+        width: 80%;
+    }
+
+    /* Footer styles */
+    .footer-menu {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    .footer-menu li {
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .footer-menu a {
+        font-size: 15px;
+        font-weight: 500;
+        padding: 5px 15px;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
+    }
+
+    .footer-menu a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background: #fff;
+        left: 0;
+        bottom: 0;
+        transition: width 0.3s ease;
+    }
+
+    .footer-menu a:hover {
+        padding-left: 5px;
+    }
+
+    .footer-menu a:hover::after {
+        width: 100%;
+    }

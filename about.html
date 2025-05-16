@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Linkco</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/shared.css">
+    <link rel="stylesheet" href="assets/css/about.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        .roadmap-section {
+            background: linear-gradient(to right, rgba(0, 51, 102, 0.02), rgba(0, 51, 102, 0.05));
+            padding: 4rem 0;
+        }
+
+        .roadmap-line {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .roadmap-line::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #003366, #0066cc);
+            top: 50%;
+            left: 0;
+            z-index: 1;
+            box-shadow: 0 0 15px rgba(0, 51, 102, 0.3);
+        }
+
+        .roadmap-item {
+            position: relative;
+            z-index: 2;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .roadmap-item:hover {
+            transform: translateY(-10px);
+            border-color: #003366;
+        }
+
+        .roadmap-icon {
+            background: linear-gradient(135deg, #003366, #0066cc);
+            color: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -40px auto 20px;
+            font-size: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 51, 102, 0.3);
+        }
+
+        .roadmap-year {
+            color: #003366;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .roadmap-title {
+            color: #004d99;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .roadmap-desc {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .custom-navbar {
+            background: transparent;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .custom-navbar.scrolled {
+            background: linear-gradient(135deg, #003366 0%, #0066cc 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand img {
+            height: 45px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav {
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            position: relative;
+            margin: 0 0.2rem;
+        }
+
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: white;
+            color: #003366 !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::before {
+            width: 80%;
+        }
+
+        .contact-link {
+            background: white !important;
+            color: #003366 !important;
+            padding: 0.8rem 1.5rem !important;
+            border-radius: 50px !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease !important;
+        }
+
+        .contact-link:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+            background: #f8f9fa !important;
+        }
+
+        .hero-about {
+            background: linear-gradient(135deg, #003366, #0066cc);
+            padding: 10rem 0 8rem;
+            min-height: 70vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-about::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255,255,255,0.05) 0%, transparent 50%);
+            opacity: 0.6;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #ffffff, #e6f2ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero-title::after {
+            content: '';
+            display: block;
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+            margin: 1.5rem auto;
+            border-radius: 2px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+            line-height: 1.8;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-icon {
+            position: absolute;
+            font-size: 12rem;
+            color: rgba(255, 255, 255, 0.1);
+            transition: all 0.5s ease;
+        }
+
+        .hero-icon.left {
+            left: 5%;
+            top: 20%;
+            transform: rotate(-15deg);
+            animation: floatLeft 6s ease-in-out infinite;
+        }
+
+        .hero-icon.right {
+            right: 5%;
+            bottom: 20%;
+            transform: rotate(15deg);
+            animation: floatRight 8s ease-in-out infinite;
+        }
+
+        @keyframes floatLeft {
+            0%, 100% { transform: rotate(-15deg) translate(0, 0); }
+            50% { transform: rotate(-15deg) translate(-20px, -20px); }
+        }
+
+        @keyframes floatRight {
+            0%, 100% { transform: rotate(15deg) translate(0, 0); }
+            50% { transform: rotate(15deg) translate(20px, -20px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .vision-mission-section {
+            background: linear-gradient(135deg, rgba(0,51,102,0.03), rgba(0,102,204,0.03));
+            padding: 4rem 0;
+            margin-top: -2rem;
+            position: relative;
+        }
+
+        .vision-card, .mission-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .vision-card:hover, .mission-card:hover {
+            border-color: #003366;
+            transform: translateY(-5px);
+        }
+
+        .section-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #003366, #0066cc);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .section-title {
+            color: #003366;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .card-title {
+            color: #003366;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .card-text {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .footer-menu {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        
+        .footer-menu li {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .footer-menu a {
+            font-size: 15px;
+            font-weight: 500;
+            padding: 5px 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease;
+        }
+        
+        .footer-menu a:hover {
+            padding-left: 5px;
+        }
+        
+        .footer-menu a:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar (updated structure) -->
+    <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/images/logo.png" alt="Logo" class="img-fluid">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                style="border: none; color: white;">
+                <i class="bi bi-list fs-1"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="about.html">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.html">Produk Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Carrer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link contact-link" href="https://wa.link/ghl23t" target="_blank" style="background: #25D366 !important; color: white !important;">
+                            <i class="bi bi-whatsapp me-2"></i>Bergabung Dengan Kami
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-about">
+        <i class="bi bi-graph-up-arrow hero-icon left"></i>
+        <i class="bi bi-building hero-icon right"></i>
+        <div class="container position-relative">
+            <div class="hero-content text-center text-white">
+                <h1 class="hero-title">Business Expansion Roadmap</h1>
+                <p class="hero-subtitle">Menyusuri perjalanan kami dalam membangun dan mengembangkan Linkco sebagai bagian integral dari industri F&B Indonesia</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section class="roadmap-section">
+        <div class="container">
+            <div class="roadmap-line">
+                <div class="row justify-content-between">
+                    <div class="col-md-3">
+                        <div class="roadmap-item text-center">
+                            <div class="roadmap-icon">
+                                <i class="bi bi-cup-hot"></i>
+                            </div>
+                            <h4 class="roadmap-year">2019</h4>
+                            <h5 class="roadmap-title">Fase Awal - Gerobak Kopi</h5>
+                            <p class="roadmap-desc">Membangun brand dan berkembang dengan konsep yang ada dan relevan</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <div class="roadmap-item text-center">
+                            <div class="roadmap-icon">
+                                <i class="bi bi-shop"></i>
+                            </div>
+                            <h4 class="roadmap-year">2020-2021</h4>
+                            <h5 class="roadmap-title">Ekspansi Gerobak Keliling</h5>
+                            <p class="roadmap-desc">Pengembangan sistem distribusi dan jangkauan pasar yang lebih luas</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="roadmap-item text-center">
+                            <div class="roadmap-icon">
+                                <i class="bi bi-phone"></i>
+                            </div>
+                            <h4 class="roadmap-year">2022-2023</h4>
+                            <h5 class="roadmap-title">Transformasi Digital</h5>
+                            <p class="roadmap-desc">Implementasi teknologi dan sistem digital untuk peningkatan efisiensi</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="roadmap-item text-center">
+                            <div class="roadmap-icon">
+                                <i class="bi bi-graph-up-arrow"></i>
+                            </div>
+                            <h4 class="roadmap-year">2024-2025</h4>
+                            <h5 class="roadmap-title">Ekspansi dan Pertumbuhan</h5>
+                            <p class="roadmap-desc">Perluasan market dan pengembangan produk baru</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision & Mission Section -->
+    <section class="vision-mission-section mt-n4">
+        <div class="container">
+            <h2 class="section-title">Visi & Misi</h2>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="vision-card">
+                        <div class="section-icon">
+                            <i class="bi bi-eye"></i>
+                        </div>
+                        <h3 class="card-title">Visi</h3>
+                        <p class="card-text">
+                            Membantu memperbaiki struktur distribusi ketahanan pangan yang adil di Indonesia, mulai dari petani hingga UMKM, dan ingin meningkatkan kewirausahaan sebesar 25% dalam 5 tahun serta mencapai tujuan Indonesia emas pada tahun 2045.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="mission-card">
+                        <div class="section-icon">
+                            <i class="bi bi-flag"></i>
+                        </div>
+                        <h3 class="card-title">Misi</h3>
+                        <p class="card-text">
+                            Menjadikan Linkco sebagai wadah distribusi yang memberdayakan dan mensejahterakan para petani, UMKM, serta barista dalam melayani kebutuhan masyarakat Indonesia.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <a href="index.html">
+                        <img src="assets/images/logo.png" alt="Logo" style="height: 100px; margin-bottom: 20px;">
+                    </a>
+                    <p class="mb-0">RUKO OP-E1, Kantor pusat Linkco coffee kopi & food, The Suites @ Metro Apartment, Jatisari, Kec. Buahbatu, Kota Bandung, Jawa Barat 40286</p>
+                </div>
+                <div class="col-md-4 mb-4 d-flex flex-column align-items-center">
+                    <ul class="list-unstyled footer-menu">
+                        <li><a href="index.html" class="text-white text-decoration-none">Beranda</a></li>
+                        <li><a href="about.html" class="text-white text-decoration-none">Tentang Kami</a></li>
+                        <li><a href="products.html" class="text-white text-decoration-none">Produk Kami</a></li>
+                        <li><a href="services.html" class="text-white text-decoration-none">Carrer</a></li>
+                        <li><a href="blog.html" class="text-white text-decoration-none">Blog</a></li>
+                        <li><a href="contact.html" class="text-white text-decoration-none">Bergabung Dengan Kami</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4"> 
+                    <a href="https://play.google.com/store/apps/details?id=com.linkco.app">
+                        <img src="assets/images/qr-code.png" alt="QR Code" style="width: 150px; margin-bottom: 10px;">
+                    </a>
+                    <div class="mt-3">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.5647563073824!2d107.66543157499!3d-6.939776093067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e9ad9ce03b03%3A0x5c06ba79358ee3f1!2sLinkco%20Coffee!5e0!3m2!1sen!2sid!4v1703728899011!5m2!1sen!2sid" 
+                            width="100%" 
+                            height="200" 
+                            style="border:0; border-radius: 8px; margin-top: 10px;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-light my-4">
+            <div class="text-center">
+                <p class="mb-3">&copy; 2025 Linkco. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/linkthecoffee.id/" class="me-3 text-white"><i class="bi bi-facebook fs-5"></i></a>
+                    <a href="https://www.tiktok.com/@linkco.id" class="me-3 text-white"><i class="bi bi-tiktok fs-5"></i></a>
+                    <a href="https://www.instagram.com/linkco.id/" class="me-3 text-white"><i class="bi bi-instagram fs-5"></i></a>
+                    <a href="https://id.linkedin.com/in/linkco-coffee-3069ba287" class="text-white"><i class="bi bi-linkedin fs-5"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.custom-navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

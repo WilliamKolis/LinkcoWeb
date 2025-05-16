@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linkco</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        .nav-link {
+            color: #003366 !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            margin: 0 0.2rem;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover {
+            background: rgba(0, 51, 102, 0.1);
+            border-radius: 5px;
+        }
+        .nav-link.active {
+            background: #003366;
+            color: white !important;
+            border-radius: 5px;
+        }
+        .footer-menu {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        
+        .footer-menu li {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .footer-menu a {
+            font-size: 15px;
+            font-weight: 500;
+            padding: 5px 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease;
+        }
+        
+        .footer-menu a:hover {
+            padding-left: 5px;
+        }
+        
+        .footer-menu a:hover::after {
+            width: 100%;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            height: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #003366;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #003366, #0066cc);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.2);
+        }
+
+        .feature-title {
+            color: #003366;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .feature-text {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            height: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            border-color: #003366;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .stats-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(45deg, #003366, #0066cc);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #003366;
+            margin: 1rem 0;
+            background: linear-gradient(45deg, #003366, #0066cc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-label {
+            color: #666;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, rgba(0, 51, 102, 0.03), rgba(0, 102, 204, 0.03));
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #003366, transparent);
+        }
+
+        .custom-navbar {
+            background: transparent;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .custom-navbar.scrolled {
+            background: linear-gradient(135deg, #003366 0%, #0066cc 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand img {
+            height: 45px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav {
+            gap: 0.5rem;
+        }
+
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: white;
+            color: #003366 !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::before {
+            width: 80%;
+        }
+
+        .contact-link {
+            background: white !important;
+            color: #003366 !important;
+            padding: 0.8rem 1.5rem !important;
+            border-radius: 50px !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease !important;
+        }
+
+        .contact-link:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+            background: #f8f9fa !important;
+        }
+
+        .hero-text {
+            animation: fadeInUp 1s ease;
+            text-shadow: 2px 4px 8px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            color: #fff;
+            font-size: 4rem;
+            font-weight: 800;
+            text-shadow: 2px 4px 8px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ffffff, #e6f2ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            color: #fff;
+            text-shadow: 1px 2px 4px rgba(0,0,0,0.3);
+            font-weight: 500;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .app-showcase {
+            background: linear-gradient(165deg, #003366, #004080, #0066cc);
+            padding: 12rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-showcase::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .app-mockup {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 
+                0 40px 80px rgba(0,0,0,0.5),
+                0 2px 10px rgba(255,255,255,0.1);
+            transform: perspective(2000px) rotateX(5deg);
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .app-mockup:hover {
+            transform: perspective(2000px) rotateX(0deg) translateY(-10px);
+            box-shadow: 
+                0 50px 100px rgba(0,0,0,0.6),
+                0 2px 20px rgba(255,255,255,0.15);
+        }
+
+        .app-mockup::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0.1),
+                transparent 10%,
+                transparent 90%,
+                rgba(0,0,0,0.2)
+            );
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .app-mockup video {
+            width: 100%;
+            display: block;
+            filter: brightness(1.1) contrast(1.1);
+            transform: scale(1.01);
+        }
+
+        .floating-icons {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .floating-icon {
+            position: absolute;
+            color: rgba(255,255,255,0.15);
+            filter: blur(1px);
+            animation: floatAround 20s infinite ease-in-out;
+            opacity: 0;
+            animation-fill-mode: both;
+        }
+
+        @keyframes floatAround {
+            0% { 
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translate(var(--tx), var(--ty)) rotate(var(--r));
+                opacity: 0;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/images/logo.png" alt="Logo" class="img-fluid">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                style="border: none; color: white;">
+                <i class="bi bi-list fs-1"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.html">Produk Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Carrer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link contact-link" href="https://wa.link/ghl23t" target="_blank" style="background: #25D366 !important; color: white !important;">
+                            <i class="bi bi-whatsapp me-2"></i>Bergabung Dengan Kami
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero text-white text-center py-5 position-relative" style="height: 100vh; overflow: hidden;">
+        <video autoplay muted loop playsinline style="position: absolute; right: 0; top: 0; width: 100%; height: 100%; object-fit: cover;">
+            <source src="assets/videos/Apps.mp4" type="video/mp4">
+        </video>
+        <div class="container d-flex flex-column justify-content-center align-items-center text-center" style="position: relative; z-index: 2; height: 100%;">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Revolutionizing F&B Industry
+                    <span class="d-block mt-2" style="font-size: 0.7em; background: linear-gradient(45deg, #ffffff, #e6f2ff); -webkit-background-clip: text; background-clip: text;">
+                        3 Negara, 8+ Produk, 1 Platform Solusi
+                    </span>
+                </h1>
+                <p class="hero-subtitle mx-auto">Bergabunglah dengan kami dalam perjalanan mengubah industri F&B menjadi lebih baik melalui inovasi dan kolaborasi.</p>
+                <div class="hero-buttons">
+                    <a href="about.html" class="btn btn-primary btn-lg">
+                        <i class="bi bi-arrow-right-circle me-2"></i>Kenali Kami
+                    </a>
+                    <a href="products.html" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-cup-hot me-2"></i>Lihat Produk
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features py-5" style="background: linear-gradient(to right, rgba(0, 51, 102, 0.02), rgba(0, 51, 102, 0.05));">
+        <div class="container">
+            <h2 class="text-center mb-5" style="color: #003366;">Keunggulan Kami</h2>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <h5 class="feature-title">3 Pihak Favorit Keberuntungan</h5>
+                        <p class="feature-text">Satu-satunya perusahaan Asia Tenggara yang menguntungkan banyak pihak dengan sistem afiliasi terintegrasi.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                        <h5 class="feature-title">Kontribusi $ 8,1 Miliar</h5>
+                        <p class="feature-text">Nilai tambah bagi perekonomian Indonesia entrepreneurship sebesar 25% di tahun 2024.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="bi bi-tree"></i>
+                        </div>
+                        <h5 class="feature-title">Ton Kali Lebih Hijau Zero Waste</h5>
+                        <p class="feature-text">Menghemat 20,8 ton plastik pada peralatan makanan dan mengurangi polusi udara.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="bi bi-diagram-3"></i>
+                        </div>
+                        <h5 class="feature-title">Digitalisasi Hulu Hilirisasi Ekosistem</h5>
+                        <p class="feature-text">Mengefisiensikan pertumbuhan 80% dalam jumlah pedagang dengan kekuatan afiliasi Linkco.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats-section">
+        <div class="container">
+            <h2 class="text-center mb-5" style="color: #003366; font-weight: 700;">Statistik Pertumbuhan Kami</h2>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="stats-card text-center">
+                        <div class="stats-icon">
+                            <i class="bi bi-cloud-download-fill"></i>
+                        </div>
+                        <div class="stats-number" data-count="1000000">1 Juta+</div>
+                        <p class="stats-label">Total Aplikasi Terinstall</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card text-center">
+                        <div class="stats-icon">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <div class="stats-number" data-count="100000">100 Ribu+</div>
+                        <p class="stats-label">Mitra Cofrista Aktif</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card text-center">
+                        <div class="stats-icon">
+                            <i class="bi bi-shop"></i>
+                        </div>
+                        <div class="stats-number" data-count="10000">10 Ribu+</div>
+                        <p class="stats-label">Mitra F&B Bergabung</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card text-center">
+                        <div class="stats-icon">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <div class="stats-number" data-count="1448">1,448x</div>
+                        <p class="stats-label">Pertumbuhan YoY</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Demo Video Section -->
+    <section class="app-showcase">
+        <div class="floating-icons">
+            <i class="bi bi-cup-hot floating-icon" style="font-size: 8rem; top: 10%; left: 5%; --tx: 100px; --ty: -50px; --r: 20deg; animation-delay: 0s;"></i>
+            <i class="bi bi-phone floating-icon" style="font-size: 9rem; top: 30%; right: 10%; --tx: -120px; --ty: -80px; --r: -15deg; animation-delay: 4s;"></i>
+            <i class="bi bi-shop floating-icon" style="font-size: 7rem; bottom: 20%; left: 15%; --tx: 80px; --ty: 60px; --r: 10deg; animation-delay: 8s;"></i>
+            <i class="bi bi-cart floating-icon" style="font-size: 6rem; bottom: 35%; right: 15%; --tx: -90px; --ty: 70px; --r: -20deg; animation-delay: 12s;"></i>
+        </div>
+        <div class="container">
+            <div class="app-mockup">
+                <video autoplay muted loop playsinline>
+                    <source src="assets/videos/Apps.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <a href="index.html">
+                        <img src="assets/images/logo.png" alt="Logo" style="height: 100px; margin-bottom: 20px;">
+                    </a>
+                    <p class="mb-0">RUKO OP-E1, Kantor pusat Linkco coffee kopi & food, The Suites @ Metro Apartment, Jatisari, Kec. Buahbatu, Kota Bandung, Jawa Barat 40286</p>
+                </div>
+                <div class="col-md-4 mb-4 d-flex flex-column align-items-center">
+                    <ul class="list-unstyled footer-menu">
+                        <li><a href="index.html" class="text-white text-decoration-none">Beranda</a></li>
+                        <li><a href="about.html" class="text-white text-decoration-none">Tentang Kami</a></li>
+                        <li><a href="products.html" class="text-white text-decoration-none">Produk Kami</a></li>
+                        <li><a href="services.html" class="text-white text-decoration-none">Carrer</a></li>
+                        <li><a href="blog.html" class="text-white text-decoration-none">Blog</a></li>
+                        <li><a href="contact.html" class="text-white text-decoration-none">Bergabung Dengan Kami</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4"> 
+                    <a href="https://play.google.com/store/apps/details?id=com.linkco.app">
+                        <img src="assets/images/qr-code.png" alt="QR Code" style="width: 150px; margin-bottom: 10px;">
+                    </a>
+                    <div class="mt-3">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.5647563073824!2d107.66543157499!3d-6.939776093067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e9ad9ce03b03%3A0x5c06ba79358ee3f1!2sLinkco%20Coffee!5e0!3m2!1sen!2sid!4v1703728899011!5m2!1sen!2sid" 
+                            width="100%" 
+                            height="200" 
+                            style="border:0; border-radius: 8px; margin-top: 10px;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-light my-4">
+            <div class="text-center">
+                <p class="mb-3">&copy; 2025 Linkco. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/linkthecoffee.id/" class="me-3 text-white"><i class="bi bi-facebook fs-5"></i></a>
+                    <a href="https://www.tiktok.com/@linkco.id" class="me-3 text-white"><i class="bi bi-tiktok fs-5"></i></a>
+                    <a href="https://www.instagram.com/linkco.id/" class="me-3 text-white"><i class="bi bi-instagram fs-5"></i></a>
+                    <a href="https://id.linkedin.com/in/linkco-coffee-3069ba287" class="text-white"><i class="bi bi-linkedin fs-5"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/scripts.js"></script>
+    <script>
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.custom-navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Products - Linkco</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .section-header {
+            position: relative;
+            padding: 1rem;
+            background: linear-gradient(45deg, #003366, #0066cc);
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #003366;
+            border-radius: 15px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+            padding: 0 10px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border: 2px solid #003366;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+            border-radius: 12px;
+            padding: 15px;
+            background: linear-gradient(145deg, #f8f9fa, #ffffff);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .product-type {
+            background: #003366;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin: 15px 0 10px;
+        }
+
+        .product-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #003366;
+            margin: 10px 0;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .product-name::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #003366, #0066cc);
+            border-radius: 2px;
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-top: 15px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .custom-navbar {
+            background: transparent;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .custom-navbar.scrolled {
+            background: linear-gradient(135deg, #003366 0%, #0066cc 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand img {
+            height: 45px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav {
+            gap: 0.5rem;
+        }
+
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: white;
+            color: #003366 !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::before {
+            width: 80%;
+        }
+
+        .contact-link {
+            background: white !important;
+            color: #003366 !important;
+            padding: 0.8rem 1.5rem !important;
+            border-radius: 50px !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease !important;
+        }
+
+        .contact-link:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+            background: #f8f9fa !important;
+        }
+
+        .footer-menu {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        
+        .footer-menu li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-menu a {
+            font-size: 15px;
+            font-weight: 500;
+            padding: 5px 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease;
+        }
+        
+        .footer-menu a:hover {
+            padding-left: 5px;
+        }
+        
+        .footer-menu a:hover::after {
+            width: 100%;
+        }
+
+        .product-section {
+            padding: 20px 0;
+            border-bottom: 3px solid #003366;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, rgba(0, 51, 102, 0.05), white, rgba(0, 51, 102, 0.05));
+        }
+
+        .hero-section {
+            background: linear-gradient(150deg, #003366 0%, #0066cc 70%, #1a8cff 100%);
+            padding: 12rem 0 8rem;
+            min-height: 75vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255,255,255,0.05) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #ffffff, #e6f2ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .hero-title::after {
+            content: '';
+            display: block;
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.8rem;
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .hero-decoration {
+            position: absolute;
+            font-size: 12rem;
+            color: rgba(255, 255, 255, 0.1);
+            transition: all 0.5s ease;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-decoration.left {
+            left: 5%;
+            top: 20%;
+            transform: rotate(-15deg);
+        }
+
+        .hero-decoration.right {
+            right: 5%;
+            bottom: 20%;
+            transform: rotate(15deg);
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(-15deg); }
+            50% { transform: translate(-20px, -20px) rotate(-5deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="assets/images/logo.png" alt="Logo" class="img-fluid">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                style="border: none; color: white;">
+                <i class="bi bi-list fs-1"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="products.html">Produk Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Carrer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link contact-link" href="https://wa.link/ghl23t" target="_blank" style="background: #25D366 !important; color: white !important;">
+                            <i class="bi bi-whatsapp me-2"></i>Bergabung Dengan Kami
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <i class="bi bi-cup-hot hero-decoration left"></i>
+        <i class="bi bi-cup-straw hero-decoration right"></i>
+        <div class="container hero-content">
+            <h1 class="hero-title text-center">Menu Kami</h1>
+            <p class="hero-subtitle text-center">Discover our carefully crafted selection of premium beverages and delightful treats</p>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <div class="container py-3">
+        <!-- Coffee Section -->
+        <div class="product-section">
+            <h2 class="section-header text-center mt-5">
+                <i class="bi bi-cup-hot mb-3 d-block" style="font-size: 2.5rem;"></i>
+                <div class="section-title">Coffee Menu</div>
+                <div class="section-subtitle">Discover our signature coffee selection</div>
+            </h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="assets/images/americano.jpg" alt="Americano" class="product-image">
+                    <h3 class="product-name">Americano</h3>
+                    <p class="product-description">Classic espresso diluted with hot water</p>
+                </div>
+                <div class="product-card">
+                    <img src="assets/images/ice coffe amigos.jpg" alt="ice-coffe-amigose" class="product-image">
+                    <h3 class="product-name">Ice Coffe Amigos</h3>
+                    <p class="product-description">Coffee variant with a blend of creamy palm sugar plus soft and tasty full cream milk</p>
+                </div>
+                <div class="product-card">
+                    <img src="assets/images/kopi susu 3 rasa.jpg" alt="kopi susu 3 rasa" class="product-image">
+                    <h3 class="product-name">Kopi Susu 3 Rasa</h3>
+                    <p class="product-description">Iced milk coffee with a blend of creamy palm sugar flavor plus soft tiramisu and hazelnuts</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Non-Coffee Section -->
+        <div class="product-section">
+            <h2 class="section-header text-center mt-5">
+                <i class="bi bi-cup-straw mb-3 d-block" style="font-size: 2.5rem;"></i>
+                <div class="section-title">Non-Coffee Menu</div>
+                <div class="section-subtitle">Refreshing alternatives for everyone</div>
+            </h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="assets/images/charcoal latte ice.jpg" alt="Charcoal Latte" class="product-image">
+                    <h3 class="product-name">Charcoal Latte</h3>
+                    <p class="product-description">Iced charcoal latte is a combination of natural charcoal and creamy fresh milk and signature palm sugar.</p>
+                </div>
+                <div class="product-card">
+                    <img src="assets/images/chocolate latte ice.jpg" alt="Chocolate Latte" class="product-image">
+                    <h3 class="product-name">Chocolate Latte</h3>
+                    <p class="product-description">Chocolate latte with premium chocolate extract and premium palm sugar topped with soft and tasty fresh milk</p>
+                </div>
+                <div class="product-card">
+                    <img src="assets/images/es miramar.jpg" alt="Es Miramar" class="product-image">
+                        <h3 class="product-name">Es Miramar</h3>
+                    <p class="product-description">Espresso with milk and a blend of chocolate and vanilla</p>
+                </div>
+                <div class="product-card">
+                    <img src="assets/images/macha latte ice.jpg" alt="Matcha Latte" class="product-image">
+                    <h3 class="product-name">Matcha Latte</h3>
+                    <p class="product-description">Espresso with milk and a blend of matcha and vanilla</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Snacks Section -->
+        <div class="product-section">
+            <h2 class="section-header text-center mt-5">
+                <i class="bi bi-basket mb-3 d-block" style="font-size: 2.5rem;"></i>
+                <div class="section-title">Snacks & Pastries</div>
+                <div class="section-subtitle">Perfect companions for your drinks</div>
+            </h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <img src="assets/images/croissant-almond.jpg" alt="Croissant Almond" class="product-image">
+                    <h3 class="product-name">Croissant Almond</h3>
+                    <p class="product-description">Freshly baked French croissant with almond</p>
+                </div>
+                <div class="product-card">
+                    <img src="assets/images/croissant-nutella.jpg" alt="Croissant Nutella" class="product-image">
+                    <h3 class="product-name">Croissant Nutella</h3>
+                    <p class="product-description">Croissant filled with Nutella</p>
+                </div>
+                <div class="product-card">
+                    <img src="assets/images/croissant-smoke-beef-cheddar-cheese.JPG" alt="Croissant Smoke Beef Cheddar Cheese" class="product-image">
+                    <h3 class="product-name">Croissant Smoke Beef Cheddar Cheese</h3>
+                    <p class="product-description">Crispy croissant with smoked beef and cheddar cheese</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <a href="index.html">
+                        <img src="assets/images/logo.png" alt="Logo" style="height: 100px; margin-bottom: 20px;">
+                    </a>
+                    <p class="mb-0">RUKO OP-E1, Kantor pusat Linkco coffee kopi & food, The Suites @ Metro Apartment, Jatisari, Kec. Buahbatu, Kota Bandung, Jawa Barat 40286</p>
+                </div>
+                <div class="col-md-4 mb-4 d-flex flex-column align-items-center">
+                    <ul class="list-unstyled footer-menu">
+                        <li><a href="index.html" class="text-white text-decoration-none">Beranda</a></li>
+                        <li><a href="about.html" class="text-white text-decoration-none">Tentang Kami</a></li>
+                        <li><a href="products.html" class="text-white text-decoration-none">Produk Kami</a></li>
+                        <li><a href="services.html" class="text-white text-decoration-none">Carrer</a></li>
+                        <li><a href="blog.html" class="text-white text-decoration-none">Blog</a></li>
+                        <li><a href="contact.html" class="text-white text-decoration-none">Bergabung Dengan Kami</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4"> 
+                    <a href="https://play.google.com/store/apps/details?id=com.linkco.app">
+                        <img src="assets/images/qr-code.png" alt="QR Code" style="width: 150px; margin-bottom: 10px;">
+                    </a>
+                    <div class="mt-3">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.5647563073824!2d107.66543157499!3d-6.939776093067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e9ad9ce03b03%3A0x5c06ba79358ee3f1!2sLinkco%20Coffee!5e0!3m2!1sen!2sid!4v1703728899011!5m2!1sen!2sid" 
+                            width="100%" 
+                            height="200" 
+                            style="border:0; border-radius: 8px; margin-top: 10px;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-light my-4">
+            <div class="text-center">
+                <p class="mb-3">&copy; 2025 Linkco. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/linkthecoffee.id/" class="me-3 text-white"><i class="bi bi-facebook fs-5"></i></a>
+                    <a href="https://www.tiktok.com/@linkco.id" class="me-3 text-white"><i class="bi bi-tiktok fs-5"></i></a>
+                    <a href="https://www.instagram.com/linkco.id/" class="me-3 text-white"><i class="bi bi-instagram fs-5"></i></a>
+                    <a href="https://id.linkedin.com/in/linkco-coffee-3069ba287" class="text-white"><i class="bi bi-linkedin fs-5"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.custom-navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
