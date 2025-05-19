@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register - Linkco</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #003366 0%, #0066cc 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+            font-family: 'Segoe UI', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.2) 100%),
+                        linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.05) 100%);
+
+            animation: rotate 20s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .auth-container {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3),
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 420px;
+            margin: 1rem;
+            transform-style: preserve-3d;
+            transform: rotateX(5deg);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            max-height: 90vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom scrollbar styling */
+        .auth-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .auth-container::-webkit-scrollbar-track {
+            background: transparent;
+            margin: 0.5rem;
+        }
+        
+        .auth-container::-webkit-scrollbar-thumb {
+            background: rgba(0, 51, 102, 0.2);
+            border-radius: 20px;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-container::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(0, 51, 102, 0.4);
+            border-width: 2px;
+        }
+
+        .auth-container:hover::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 51, 102, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .auth-container::-webkit-scrollbar {
+                width: 4px;
+            }
+            .auth-container::-webkit-scrollbar-track {
+                margin: 0.25rem;
+            }
+        }
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            position: relative;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 15px;
+        }
+        .auth-tab {
+            flex: 1;
+            padding: 0.8rem;
+            text-align: center;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            color: #666;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .auth-tab.active {
+            color: white;
+        }
+        .auth-tab.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #003366, #0066cc);
+            border-radius: 12px;
+            z-index: -1;
+            transform: translateY(0);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.3);
+        }
+        .form-control {
+            border-radius: 12px;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #eee;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+            font-size: 0.95rem;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+        .form-control:focus {
+            border-color: #003366;
+            box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1), 
+                        inset 0 2px 4px rgba(0, 0, 0, 0);
+            transform: translateY(-1px);
+        }
+        .form-floating {
+            margin-bottom: 1rem;
+        }
+        .form-floating > label {
+            padding-left: 1.2rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #003366, #0066cc);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.2),
+                        inset 0 2px 4px rgba(255, 255, 255, 0.1);
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 51, 102, 0.25),
+                        inset 0 2px 4px rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg, #004080, #0077cc);
+        }
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(0, 51, 102, 0.15),
+                        inset 0 2px 4px rgba(255, 255, 255, 0.1);
+            transition: 0.1s;
+        }
+        .referral-code {
+            background: linear-gradient(135deg, #f8f9fa, #fff);
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            text-align: center;
+            display: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .referral-code.show {
+            display: block;
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .logo-container {
+            margin-bottom: 2.5rem;
+            position: relative;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #003366, #0066cc);
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 35px rgba(0, 51, 102, 0.25);
+            border: 4px solid rgba(255, 255, 255, 0.9);
+            transform: translateY(-15px);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+        .logo-container:hover {
+            transform: translateY(-20px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 51, 102, 0.3);
+        }
+        .logo-container img {
+            width: 85px;
+            height: auto;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+            transition: transform 0.3s ease;
+        }
+        .logo-container:hover img {
+            transform: scale(1.1);
+        }
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.1));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, 
+                         linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, 
+                  linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+        .decorative-icons {
+            display: block;
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .decorative-icon {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.2);
+            animation: float 6s infinite ease-in-out;
+            filter: blur(0.5px);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .decorative-icon:nth-child(1) {
+            top: 15%;
+            left: 15%;
+            font-size: 1.8rem;
+            animation-delay: 0s;
+            animation-duration: 5s;
+        }
+        .decorative-icon:nth-child(2) {
+            top: 25%;
+            right: 15%;
+            font-size: 1.6rem;
+            animation-delay: 1s;
+            animation-duration: 7s;
+        }
+        .decorative-icon:nth-child(3) {
+            bottom: 25%;
+            left: 20%;
+            font-size: 2rem;
+            animation-delay: 2s;
+            animation-duration: 6s;
+        }
+        .decorative-icon:nth-child(4) {
+            bottom: 20%;
+            right: 20%;
+            font-size: 1.7rem;
+            animation-delay: 3s;
+            animation-duration: 8s;
+        }
+        @media (hover: hover) {
+            .decorative-icon:hover {
+                color: rgba(255, 255, 255, 0.3);
+                transform: scale(1.2);
+                filter: blur(0);
+            }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }        .input-group {
+            margin-bottom: 1.2rem;
+            position: relative;
+            align-items: stretch;
+        }        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-floating > .form-control {
+            padding: 1.5rem 1rem 0.5rem;
+            height: 4rem;
+            border-radius: 12px;
+            border: 2px solid #eee;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .form-floating > label {
+            padding: 1rem;
+            color: #666;
+        }
+
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label {
+            transform: scale(0.85) translateY(-0.75rem);
+            color: #003366;
+        }
+
+        .form-control:focus {
+            border-color: #003366;
+            box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1);
+        }
+
+        .input-group i {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            color: #666;
+            z-index: 4;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-group:focus-within i {
+            color: #003366;
+            border-width: 2px;
+            box-shadow: none;
+            height: calc(3.5rem + 2px);
+        }
+        .form-control:focus {
+            outline: none;
+            box-shadow: none !important;
+            border-color: #003366;
+        }
+        .input-group:focus-within .input-group-text {
+            border-color: #003366;
+            color: #003366;
+            border-width: 2px;
+        }
+        .input-group:focus-within .form-control {
+            border-color: #003366;
+            border-width: 2px;
+        }
+        .form-floating > .form-control:focus ~ label {
+            color: #003366;
+        }
+        .input-group .form-floating {
+            flex: 1;
+            height: auto;
+        }
+        /* Memperbaiki alignment form floating */
+        .form-floating > .form-control {
+            height: calc(3.5rem + 2px);
+            line-height: 1.25;
+            padding: 1.2rem 1.2rem 0.4rem;
+        }
+        .form-floating > label {
+            padding: 0.5rem 1.2rem;
+            height: 3.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .input-group .form-floating {
+            display: flex;
+            align-items: stretch;
+            flex: 1;
+        }
+        /* Styling hover state */
+        .input-group:hover .input-group-text,
+        .input-group:hover .form-control {
+            border-color: #ccc;
+        }
+        .recent-users-list {
+            border: 1px solid rgba(0, 51, 102, 0.1);
+            border-radius: 12px;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.5);
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .recent-user-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .recent-user-item:hover {
+            background: rgba(0, 51, 102, 0.05);
+        }
+
+        .recent-user-item i {
+            margin-right: 0.75rem;
+            color: #003366;
+        }
+
+        .alert {
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid transparent;
+        }
+
+        .alert-success {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-color: rgba(76, 175, 80, 0.3);
+            color: #4CAF50;
+        }
+
+        .alert-danger {
+            background-color: rgba(244, 67, 54, 0.1);
+            border-color: rgba(244, 67, 54, 0.3);
+            color: #F44336;
+        }
+
+        .alert::before {
+            font-family: "bootstrap-icons";
+            font-size: 1.2rem;
+        }
+
+        .alert-success::before {
+            content: "\F270";
+        }
+
+        .alert-danger::before {
+            content: "\F623";
+        }    </style>
+</head>
+<body>
+    <!-- Decorative Icons -->
+    <div class="decorative-icons">
+        <i class="bi bi-cup-hot decorative-icon"></i>
+        <i class="bi bi-shop decorative-icon"></i>
+        <i class="bi bi-person-hearts decorative-icon"></i>
+        <i class="bi bi-stars decorative-icon"></i>
+    </div>
+
+    <div class="auth-container">
+        <div class="logo-container text-center">
+            <img src="assets/images/logo.png" alt="Linkco Logo">
+        </div>
+
+        <div class="auth-tabs">
+            <button class="auth-tab active" onclick="switchTab('login')">Login</button>
+            <button class="auth-tab" onclick="switchTab('register')">Register</button>
+        </div>
+        
+        <form id="loginForm" class="needs-validation">
+            <div class="input-group">
+                <div class="form-floating">                <input type="text" class="form-control" id="loginUsername" placeholder="Username" required maxlength="16" pattern="^[a-zA-Z0-9_-]{1,16}$" title="Username can only contain letters, numbers, underscores and hyphens (max 16 characters)">
+                    <label for="loginUsername">Username</label>
+                </div>
+                <i class="bi bi-person"></i>
+            </div>
+            <div class="input-group">
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Password" required minlength="8" maxlength="12" pattern=".{8,12}" title="Password must be 8-12 characters long">
+                    <label for="loginPassword">Password</label>
+                </div>
+                <i class="bi bi-key"></i>
+            </div>
+            <div id="recentUsers" class="mb-3 d-none">
+                <h6 class="text-muted mb-2">Recent Logins</h6>
+                <div class="recent-users-list"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Login
+            </button>
+            <div id="loginMessage" class="alert mt-3 d-none"></div>
+        </form>
+        <form id="registerForm" class="needs-validation" style="display: none;">
+            <div class="input-group">                <div class="form-floating">                    <input type="text" class="form-control" id="regUsername" placeholder="Username" required maxlength="16" pattern="^[a-zA-Z0-9_-]{1,16}$" title="Username can only contain letters, numbers, underscores and hyphens (max 16 characters)">
+                    <label for="regUsername">Username</label>
+                </div>
+                <i class="bi bi-person"></i>
+            </div>
+            <div class="input-group">
+                <div class="form-floating">
+                    <input type="email" class="form-control" id="regEmail" placeholder="Email" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+" title="Please enter a valid email address">
+                    <label for="regEmail">Email</label>
+                </div>
+                <i class="bi bi-envelope"></i>
+            </div>
+            <div class="input-group">
+                <div class="form-floating">                    <input type="tel" class="form-control" id="regPhone" placeholder="Phone Number" required pattern="^\d{10,13}$" title="Phone number must be between 10 and 13 digits">
+                    <label for="regPhone">Phone Number</label>
+                </div>
+                <i class="bi bi-phone"></i>
+            </div>
+            <div class="input-group">
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="regPassword" placeholder="Password" required minlength="8" maxlength="12" pattern=".{8,12}" title="Password must be between 8 and 12 characters">
+                    <label for="regPassword">Password</label>
+                </div>
+                <i class="bi bi-key"></i>
+            </div>
+            <div class="input-group">                <div class="form-floating">
+                    <input type="text" class="form-control" id="refCode" placeholder="Referral Code" maxlength="8" pattern="^[A-Z0-9]{0,8}$" title="Referral code must be up to 8 uppercase letters and numbers only">
+                    <label for="refCode">Referral Code (Optional)</label>
+                </div>
+                <i class="bi bi-gift"></i>
+            </div>            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-person-plus me-2"></i>Register
+            </button>
+            <div id="registerMessage" class="alert mt-3 d-none"></div>
+        </form>
+
+        <div class="referral-code" id="referralCode">
+            <h6 class="mb-3">Your Referral Code</h6>
+            <div class="d-flex align-items-center justify-content-center gap-3">
+                <code class="fs-4 fw-bold" id="generatedRefCode">ABC123</code>
+                <button class="btn btn-sm btn-outline-primary" onclick="copyReferralCode()">
+                    <i class="bi bi-clipboard"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+</body>
+</html>

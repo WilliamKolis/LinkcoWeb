@@ -8,8 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Open index.html",
-            "file": "d:\\website-project\\website-project\\index.html"
+            "file": "D:\\WebLinkco\\index.html"
         }
-
     ]
 }
